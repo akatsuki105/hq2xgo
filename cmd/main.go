@@ -37,11 +37,15 @@ func Run() int {
 	before, err := openImage(input)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
+		return 1
 	}
 
 	after, err := hq2x.HQ2x(before.(*image.RGBA))
 
-	saveImage(output, after)
+	if err := saveImage(output, after); err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return 1
+	}
 
 	return 0
 }
@@ -71,13 +75,14 @@ func openImage(path string) (image.Image, error) {
 	return img, nil
 }
 
-func saveImage(path string, img image.Image) {
+func saveImage(path string, img image.Image) error {
 	file, err := os.Create(path)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer file.Close()
 	if err := png.Encode(file, img); err != nil {
-		panic(err)
+		return err
 	}
+	return nil
 }

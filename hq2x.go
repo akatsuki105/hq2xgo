@@ -65,9 +65,9 @@ func getPixel(src *image.RGBA, x, y int) color.RGBA {
 
 func hq2xPixel(context [9]color.RGBA) (tl, tr, bl, br color.RGBA) {
 	yuvContext := [9]color.YCbCr{}
-	yuvPixel := RGBAToYCbCr(context[CENTER])
+	yuvPixel := rgbaToYCbCr(context[CENTER])
 	for i := 0; i < 9; i++ {
-		yuvContext[i] = RGBAToYCbCr(context[i])
+		yuvContext[i] = rgbaToYCbCr(context[i])
 	}
 
 	contextFlag := newContextFlag()
@@ -1839,7 +1839,7 @@ func newContextFlag() [9]uint8 {
 	return contextFlag
 }
 
-func RGBAToYCbCr(c color.RGBA) color.YCbCr {
+func rgbaToYCbCr(c color.RGBA) color.YCbCr {
 	r, g, b := c.R, c.G, c.B
 	y, u, v := color.RGBToYCbCr(r, g, b)
 	return color.YCbCr{
