@@ -34,6 +34,7 @@ func HQ2x(src *image.RGBA) (*image.RGBA, error) {
 			}
 
 			tl, tr, bl, br := hq2xPixel(context)
+			tl.A, tr.A, bl.A, br.A = 0xff, 0xff, 0xff, 0xff
 			dest.Set(x*2, y*2, tl)
 			dest.Set(x*2+1, y*2, tr)
 			dest.Set(x*2, y*2+1, bl)
@@ -65,13 +66,13 @@ func getPixel(src *image.RGBA, x, y int) color.RGBA {
 func hq2xPixel(context [9]color.RGBA) (tl, tr, bl, br color.RGBA) {
 	yuvContext := [9]color.YCbCr{}
 	yuvPixel := RGBAToYCbCr(context[CENTER])
-	for i := 0; i <= 9; i++ {
+	for i := 0; i < 9; i++ {
 		yuvContext[i] = RGBAToYCbCr(context[i])
 	}
 
 	contextFlag := newContextFlag()
 	var pattern uint8
-	for bit := 0; bit <= 9; bit++ {
+	for bit := 0; bit < 9; bit++ {
 		if bit != CENTER && !equalYuv(yuvContext[bit], yuvPixel) {
 			pattern |= contextFlag[bit]
 		}

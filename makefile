@@ -8,7 +8,3 @@ endif
 .PHONY: build
 build:
 	go build -o hq2x$(EXE_EXT) ./cmd/main.go 
-
-.PHONY: run
-run:
-	go run ./cmd/main.go
