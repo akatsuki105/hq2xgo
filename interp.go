@@ -2,7 +2,7 @@ package hq2x
 
 import "image/color"
 
-func interpolate1(a, b *color.RGBA) *color.RGBA {
+func interp1(a, b color.RGBA) color.RGBA {
 	f := func(a, b uint8) uint8 {
 		return uint8((uint(a)*3 + uint(b)) / 4)
 	}
@@ -10,14 +10,14 @@ func interpolate1(a, b *color.RGBA) *color.RGBA {
 	R := f(a.R, b.R)
 	G := f(a.G, b.G)
 	B := f(a.B, b.B)
-	return &color.RGBA{
+	return color.RGBA{
 		R: R,
 		G: G,
 		B: B,
 	}
 }
 
-func interpolate2(a, b, c *color.RGBA) *color.RGBA {
+func interp2(a, b, c color.RGBA) color.RGBA {
 	f := func(a, b, c uint8) uint8 {
 		return uint8((uint(a)*2 + uint(b) + uint(c)) / 4)
 	}
@@ -25,14 +25,14 @@ func interpolate2(a, b, c *color.RGBA) *color.RGBA {
 	R := f(a.R, b.R, c.R)
 	G := f(a.G, b.G, c.G)
 	B := f(a.B, b.B, c.B)
-	return &color.RGBA{
+	return color.RGBA{
 		R: R,
 		G: G,
 		B: B,
 	}
 }
 
-func interpolate5(a, b *color.RGBA) *color.RGBA {
+func interp5(a, b color.RGBA) color.RGBA {
 	f := func(a, b uint8) uint8 {
 		return uint8((uint(a) + uint(b)) / 2)
 	}
@@ -40,14 +40,14 @@ func interpolate5(a, b *color.RGBA) *color.RGBA {
 	R := f(a.R, b.R)
 	G := f(a.G, b.G)
 	B := f(a.B, b.B)
-	return &color.RGBA{
+	return color.RGBA{
 		R: R,
 		G: G,
 		B: B,
 	}
 }
 
-func interpolate6(a, b, c *color.RGBA) *color.RGBA {
+func interp6(a, b, c color.RGBA) color.RGBA {
 	f := func(a, b, c uint8) uint8 {
 		return uint8((uint(a)*5 + uint(b)*2 + uint(c)) / 8)
 	}
@@ -55,14 +55,14 @@ func interpolate6(a, b, c *color.RGBA) *color.RGBA {
 	R := f(a.R, b.R, c.R)
 	G := f(a.G, b.G, c.G)
 	B := f(a.B, b.B, c.B)
-	return &color.RGBA{
+	return color.RGBA{
 		R: R,
 		G: G,
 		B: B,
 	}
 }
 
-func interpolate7(a, b, c *color.RGBA) *color.RGBA {
+func interp7(a, b, c color.RGBA) color.RGBA {
 	f := func(a, b, c uint8) uint8 {
 		return uint8((uint(a)*6 + uint(b) + uint(c)) / 8)
 	}
@@ -70,14 +70,14 @@ func interpolate7(a, b, c *color.RGBA) *color.RGBA {
 	R := f(a.R, b.R, c.R)
 	G := f(a.G, b.G, c.G)
 	B := f(a.B, b.B, c.B)
-	return &color.RGBA{
+	return color.RGBA{
 		R: R,
 		G: G,
 		B: B,
 	}
 }
 
-func interpolate9(a, b, c *color.RGBA) *color.RGBA {
+func interp9(a, b, c color.RGBA) color.RGBA {
 	f := func(a, b, c uint8) uint8 {
 		return uint8((uint(a)*2 + uint(b)*3 + uint(c)*3) / 8)
 	}
@@ -85,14 +85,14 @@ func interpolate9(a, b, c *color.RGBA) *color.RGBA {
 	R := f(a.R, b.R, c.R)
 	G := f(a.G, b.G, c.G)
 	B := f(a.B, b.B, c.B)
-	return &color.RGBA{
+	return color.RGBA{
 		R: R,
 		G: G,
 		B: B,
 	}
 }
 
-func interpolate10(a, b, c *color.RGBA) *color.RGBA {
+func interp10(a, b, c color.RGBA) color.RGBA {
 	f := func(a, b, c uint8) uint8 {
 		return uint8((uint(a)*14 + uint(b) + uint(c)) / 16)
 	}
@@ -100,7 +100,7 @@ func interpolate10(a, b, c *color.RGBA) *color.RGBA {
 	R := f(a.R, b.R, c.R)
 	G := f(a.G, b.G, c.G)
 	B := f(a.B, b.B, c.B)
-	return &color.RGBA{
+	return color.RGBA{
 		R: R,
 		G: G,
 		B: B,
