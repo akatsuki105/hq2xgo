@@ -23,12 +23,48 @@ const (
 func HQ2x(src image.Image) (*image.RGBA, error) {
 	srcX, srcY := src.Bounds().Dx(), src.Bounds().Dy()
 
-	result := image.NewRGBA(image.Rect(0, 0, srcX*2, srcY*2))
-	return result, nil
+	dest := image.NewRGBA(image.Rect(0, 0, srcX*2, srcY*2))
+
+	for x := 0; x < srcX; x++ {
+		for y := 0; y < srcY; y++ {
+			context := [9]color.Color{
+				getPixel(src, x-1, y-1), getPixel(src, x, y-1), getPixel(src, x+1, y-1),
+				getPixel(src, x-1, y), getPixel(src, x, y), getPixel(src, x+1, y),
+				getPixel(src, x-1, y+1), getPixel(src, x, y+1), getPixel(src, x+1, y+1),
+			}
+
+			tmp := hq2xPixel(context)
+			tl, tr, bl, br := tmp[0], tmp[1], tmp[2], tmp[3]
+			dest.Set(x*2, y*2, tl)
+			dest.Set(x*2+1, y*2, tr)
+			dest.Set(x*2, y*2+1, bl)
+			dest.Set(x*2+1, y*2+1, br)
+		}
+	}
+
+	return dest, nil
 }
 
-func hq2xPixel(context [9]color.RGBA) [4]color.RGBA {
-	result := [4]color.RGBA{}
+func getPixel(src image.Image, x, y int) color.Color {
+	width, height := src.Bounds().Dx(), src.Bounds().Dy()
+
+	if x < 0 {
+		x = 0
+	} else if x >= width {
+		x = width - 1
+	}
+
+	if y < 0 {
+		y = 0
+	} else if y >= height {
+		y = height - 1
+	}
+
+	return src.At(x, y)
+}
+
+func hq2xPixel(context [9]color.Color) [4]color.Color {
+	result := [4]color.Color{}
 
 	yuvContext := [9]color.YCbCr{}
 	yuvPixel := colorToYCbCr(context[center])
@@ -253,8 +289,8 @@ func newContextFlag() [9]uint8 {
 }
 
 func colorToYCbCr(c color.Color) color.YCbCr {
-	r, g, b, _ := c.RGBA()
-	y, u, v := color.RGBToYCbCr(uint8(r>>24), uint8(g>>24), uint8(b>>24))
+	r, g, b := colorToRGB(c)
+	y, u, v := color.RGBToYCbCr(r, g, b)
 	return color.YCbCr{
 		Y:  y,
 		Cb: u,
