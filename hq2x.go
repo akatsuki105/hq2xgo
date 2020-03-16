@@ -20,14 +20,14 @@ const (
 )
 
 // HQ2x - Enlarge image by 2x with hq2x algorithm
-func HQ2x(src image.Image) (*image.RGBA, error) {
+func HQ2x(src *image.RGBA) (*image.RGBA, error) {
 	srcX, srcY := src.Bounds().Dx(), src.Bounds().Dy()
 
 	dest := image.NewRGBA(image.Rect(0, 0, srcX*2, srcY*2))
 
 	for x := 0; x < srcX; x++ {
 		for y := 0; y < srcY; y++ {
-			context := [9]color.Color{
+			context := [9]color.RGBA{
 				getPixel(src, x-1, y-1), getPixel(src, x, y-1), getPixel(src, x+1, y-1),
 				getPixel(src, x-1, y), getPixel(src, x, y), getPixel(src, x+1, y),
 				getPixel(src, x-1, y+1), getPixel(src, x, y+1), getPixel(src, x+1, y+1),
@@ -45,7 +45,7 @@ func HQ2x(src image.Image) (*image.RGBA, error) {
 	return dest, nil
 }
 
-func getPixel(src image.Image, x, y int) color.Color {
+func getPixel(src *image.RGBA, x, y int) color.RGBA {
 	width, height := src.Bounds().Dx(), src.Bounds().Dy()
 
 	if x < 0 {
@@ -60,16 +60,16 @@ func getPixel(src image.Image, x, y int) color.Color {
 		y = height - 1
 	}
 
-	return src.At(x, y)
+	return src.RGBAAt(x, y)
 }
 
-func hq2xPixel(context [9]color.Color) [4]color.Color {
-	result := [4]color.Color{}
+func hq2xPixel(context [9]color.RGBA) [4]color.RGBA {
+	result := [4]color.RGBA{}
 
 	yuvContext := [9]color.YCbCr{}
-	yuvPixel := colorToYCbCr(context[center])
+	yuvPixel := RGBAToYCbCr(context[center])
 	for i := 0; i <= 9; i++ {
-		yuvContext[i] = colorToYCbCr(context[i])
+		yuvContext[i] = RGBAToYCbCr(context[i])
 	}
 
 	contextFlag := newContextFlag()
@@ -288,8 +288,8 @@ func newContextFlag() [9]uint8 {
 	return result
 }
 
-func colorToYCbCr(c color.Color) color.YCbCr {
-	r, g, b := colorToRGB(c)
+func RGBAToYCbCr(c color.RGBA) color.YCbCr {
+	r, g, b := c.R, c.G, c.B
 	y, u, v := color.RGBToYCbCr(r, g, b)
 	return color.YCbCr{
 		Y:  y,
