@@ -672,95 +672,1126 @@ func hq2xPixel(context [9]color.RGBA) (tl, tr, bl, br color.RGBA) {
 		br = interp1(context[CENTER], context[RIGHT])
 
 	case 78:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = interp1(context[CENTER], context[TOP_LEFT])
+		} else {
+			tl = interp7(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp1(context[CENTER], context[RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp2(context[CENTER], context[BOTTOM_RIGHT], context[RIGHT])
+
 	case 154:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = interp1(context[CENTER], context[TOP_LEFT])
+		} else {
+			tl = interp7(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp2(context[CENTER], context[BOTTOM_LEFT], context[BOTTOM])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 114:
+		tl = interp2(context[CENTER], context[TOP_LEFT], context[LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 89:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp2(context[CENTER], context[TOP_RIGHT], context[TOP])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 90:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = interp1(context[CENTER], context[TOP_LEFT])
+		} else {
+			tl = interp7(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 55, 23:
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tl = interp1(context[CENTER], context[LEFT])
+			tr = context[CENTER]
+		} else {
+			tl = interp6(context[CENTER], context[TOP], context[LEFT])
+			tr = interp9(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		br = interp2(context[CENTER], context[BOTTOM_RIGHT], context[BOTTOM])
+
 	case 182, 150:
+		tl = interp2(context[CENTER], context[TOP_LEFT], context[LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+			br = interp1(context[CENTER], context[BOTTOM])
+		} else {
+			tr = interp9(context[CENTER], context[TOP], context[RIGHT])
+			br = interp6(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+		bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+
 	case 213, 212:
+		tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			tr = interp1(context[CENTER], context[TOP])
+			br = context[CENTER]
+		} else {
+			tr = interp6(context[CENTER], context[RIGHT], context[TOP])
+			br = interp9(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+		bl = interp2(context[CENTER], context[BOTTOM_LEFT], context[LEFT])
+
 	case 241, 240:
+		tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		tr = interp2(context[CENTER], context[TOP_RIGHT], context[TOP])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			bl = interp1(context[CENTER], context[LEFT])
+			br = context[CENTER]
+		} else {
+			bl = interp6(context[CENTER], context[BOTTOM], context[LEFT])
+			br = interp9(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 236, 232:
+		tl = interp2(context[CENTER], context[TOP_LEFT], context[TOP])
+		tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+			br = interp1(context[CENTER], context[RIGHT])
+		} else {
+			bl = interp9(context[CENTER], context[BOTTOM], context[LEFT])
+			br = interp6(context[CENTER], context[BOTTOM], context[RIGHT])
+		}
+
 	case 109, 105:
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			tl = interp1(context[CENTER], context[TOP])
+			bl = context[CENTER]
+		} else {
+			tl = interp6(context[CENTER], context[LEFT], context[TOP])
+			bl = interp9(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		br = interp2(context[CENTER], context[BOTTOM_RIGHT], context[RIGHT])
+
 	case 171, 43:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+			bl = interp1(context[CENTER], context[BOTTOM])
+		} else {
+			tl = interp9(context[CENTER], context[LEFT], context[TOP])
+			bl = interp6(context[CENTER], context[LEFT], context[BOTTOM])
+		}
+		tr = interp2(context[CENTER], context[TOP_RIGHT], context[RIGHT])
+		br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+
 	case 143, 15:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+			tr = interp1(context[CENTER], context[RIGHT])
+		} else {
+			tl = interp9(context[CENTER], context[LEFT], context[TOP])
+			tr = interp6(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp2(context[CENTER], context[BOTTOM_LEFT], context[BOTTOM])
+		br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+
 	case 124:
+		tl = interp2(context[CENTER], context[TOP_LEFT], context[TOP])
+		tr = interp1(context[CENTER], context[TOP])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+
 	case 203:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp2(context[CENTER], context[TOP_RIGHT], context[RIGHT])
+		bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 62:
+		tl = interp1(context[CENTER], context[TOP_LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[BOTTOM])
+		br = interp2(context[CENTER], context[BOTTOM_RIGHT], context[BOTTOM])
+
 	case 211:
+		tl = interp1(context[CENTER], context[LEFT])
+		tr = interp1(context[CENTER], context[TOP_RIGHT])
+		bl = interp2(context[CENTER], context[BOTTOM_LEFT], context[LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 118:
+		tl = interp2(context[CENTER], context[TOP_LEFT], context[LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[LEFT])
+		br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+
 	case 217:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp2(context[CENTER], context[TOP_RIGHT], context[TOP])
+		bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 110:
+		tl = interp1(context[CENTER], context[TOP_LEFT])
+		tr = interp1(context[CENTER], context[RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp2(context[CENTER], context[BOTTOM_RIGHT], context[RIGHT])
+
 	case 155:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp1(context[CENTER], context[TOP_RIGHT])
+		bl = interp2(context[CENTER], context[BOTTOM_LEFT], context[BOTTOM])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 188:
+		tl = interp2(context[CENTER], context[TOP_LEFT], context[TOP])
+		tr = interp1(context[CENTER], context[TOP])
+		bl = interp1(context[CENTER], context[BOTTOM])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 185:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp2(context[CENTER], context[TOP_RIGHT], context[TOP])
+		bl = interp1(context[CENTER], context[BOTTOM])
+		br = interp1(context[CENTER], context[BOTTOM])
 	case 61:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp1(context[CENTER], context[TOP])
+		bl = interp1(context[CENTER], context[BOTTOM])
+		br = interp2(context[CENTER], context[BOTTOM_RIGHT], context[BOTTOM])
+
 	case 157:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp1(context[CENTER], context[TOP])
+		bl = interp2(context[CENTER], context[BOTTOM_LEFT], context[BOTTOM])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 103:
+		tl = interp1(context[CENTER], context[LEFT])
+		tr = interp1(context[CENTER], context[RIGHT])
+		bl = interp1(context[CENTER], context[LEFT])
+		br = interp2(context[CENTER], context[BOTTOM_RIGHT], context[RIGHT])
+
 	case 227:
+		tl = interp1(context[CENTER], context[LEFT])
+		tr = interp2(context[CENTER], context[TOP_RIGHT], context[RIGHT])
+		bl = interp1(context[CENTER], context[LEFT])
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 230:
+		tl = interp2(context[CENTER], context[TOP_LEFT], context[LEFT])
+		tr = interp1(context[CENTER], context[RIGHT])
+		bl = interp1(context[CENTER], context[LEFT])
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 199:
+		tl = interp1(context[CENTER], context[LEFT])
+		tr = interp1(context[CENTER], context[RIGHT])
+		bl = interp2(context[CENTER], context[BOTTOM_LEFT], context[LEFT])
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 220:
+		tl = interp2(context[CENTER], context[TOP_LEFT], context[TOP])
+		tr = interp1(context[CENTER], context[TOP])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 158:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = interp1(context[CENTER], context[TOP_LEFT])
+		} else {
+			tl = interp7(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp2(context[CENTER], context[BOTTOM_LEFT], context[BOTTOM])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 234:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = interp1(context[CENTER], context[TOP_LEFT])
+		} else {
+			tl = interp7(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp2(context[CENTER], context[TOP_RIGHT], context[RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 242:
+		tl = interp2(context[CENTER], context[TOP_LEFT], context[LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 59:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[BOTTOM])
+		br = interp2(context[CENTER], context[BOTTOM_RIGHT], context[BOTTOM])
+
 	case 121:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp2(context[CENTER], context[TOP_RIGHT], context[TOP])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 87:
+		tl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp2(context[CENTER], context[BOTTOM_LEFT], context[LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 79:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp1(context[CENTER], context[RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp2(context[CENTER], context[BOTTOM_RIGHT], context[RIGHT])
+
 	case 122:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = interp1(context[CENTER], context[TOP_LEFT])
+		} else {
+			tl = interp7(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 94:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = interp1(context[CENTER], context[TOP_LEFT])
+		} else {
+			tl = interp7(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		}
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 218:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = interp1(context[CENTER], context[TOP_LEFT])
+		} else {
+			tl = interp7(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 91:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 229:
+		tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		bl = interp1(context[CENTER], context[LEFT])
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 167:
+		tl = interp1(context[CENTER], context[LEFT])
+		tr = interp1(context[CENTER], context[RIGHT])
+		bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+
 	case 173:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		bl = interp1(context[CENTER], context[BOTTOM])
+		br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+
 	case 181:
+		tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		tr = interp1(context[CENTER], context[TOP])
+		bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 186:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = interp1(context[CENTER], context[TOP_LEFT])
+		} else {
+			tl = interp7(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[BOTTOM])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 115:
+		tl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 93:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp1(context[CENTER], context[TOP])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 206:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = interp1(context[CENTER], context[TOP_LEFT])
+		} else {
+			tl = interp7(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp1(context[CENTER], context[RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 205, 201:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 174, 46:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = interp1(context[CENTER], context[TOP_LEFT])
+		} else {
+			tl = interp7(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp1(context[CENTER], context[RIGHT])
+		bl = interp1(context[CENTER], context[BOTTOM])
+		br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+
 	case 179, 147:
+		tl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 117, 116:
+		tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		tr = interp1(context[CENTER], context[TOP])
+		bl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 189:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp1(context[CENTER], context[TOP])
+		bl = interp1(context[CENTER], context[BOTTOM])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 231:
+		tl = interp1(context[CENTER], context[LEFT])
+		tr = interp1(context[CENTER], context[RIGHT])
+		bl = interp1(context[CENTER], context[LEFT])
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 126:
+		tl = interp1(context[CENTER], context[TOP_LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		}
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+
 	case 219:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp1(context[CENTER], context[TOP_RIGHT])
+		bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 125:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 221:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = interp1(context[CENTER], context[TOP_RIGHT])
+		} else {
+			tr = interp7(context[CENTER], context[TOP], context[RIGHT])
+		}
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		} else {
+			bl = interp7(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+		} else {
+			br = interp7(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 207:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+			tr = interp1(context[CENTER], context[RIGHT])
+		} else {
+			tl = interp9(context[CENTER], context[LEFT], context[TOP])
+			tr = interp6(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 238:
+		tl = interp1(context[CENTER], context[TOP_LEFT])
+		tr = interp1(context[CENTER], context[RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+			br = interp1(context[CENTER], context[RIGHT])
+		} else {
+			bl = interp9(context[CENTER], context[BOTTOM], context[LEFT])
+			br = interp6(context[CENTER], context[BOTTOM], context[RIGHT])
+		}
+
 	case 190:
+		tl = interp1(context[CENTER], context[TOP_LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+			br = interp1(context[CENTER], context[BOTTOM])
+		} else {
+			tr = interp9(context[CENTER], context[TOP], context[RIGHT])
+			br = interp6(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+		bl = interp1(context[CENTER], context[BOTTOM])
+
 	case 187:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+			bl = interp1(context[CENTER], context[BOTTOM])
+		} else {
+			tl = interp9(context[CENTER], context[LEFT], context[TOP])
+			bl = interp6(context[CENTER], context[LEFT], context[BOTTOM])
+		}
+		tr = interp1(context[CENTER], context[TOP_RIGHT])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 243:
+		tl = interp1(context[CENTER], context[LEFT])
+		tr = interp1(context[CENTER], context[TOP_RIGHT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			bl = interp1(context[CENTER], context[LEFT])
+			br = context[CENTER]
+		} else {
+			bl = interp6(context[CENTER], context[BOTTOM], context[LEFT])
+			br = interp9(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 119:
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tl = interp1(context[CENTER], context[LEFT])
+			tr = context[CENTER]
+		} else {
+			tl = interp6(context[CENTER], context[TOP], context[LEFT])
+			tr = interp9(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[LEFT])
+		br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+
 	case 237, 233:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp10(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 175, 47:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp10(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp1(context[CENTER], context[RIGHT])
+		bl = interp1(context[CENTER], context[BOTTOM])
+		br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+
 	case 183, 151:
+		tl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp10(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 245, 244:
+		tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		tr = interp1(context[CENTER], context[TOP])
+		bl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp10(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 250:
+		tl = interp1(context[CENTER], context[TOP_LEFT])
+		tr = interp1(context[CENTER], context[TOP_RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 123:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp1(context[CENTER], context[TOP_RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+
 	case 95:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+
 	case 222:
+		tl = interp1(context[CENTER], context[TOP_LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 252:
+		tl = interp2(context[CENTER], context[TOP_LEFT], context[TOP])
+		tr = interp1(context[CENTER], context[TOP])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp10(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 249:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp2(context[CENTER], context[TOP_RIGHT], context[TOP])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp10(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 235:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp2(context[CENTER], context[TOP_RIGHT], context[RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp10(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 111:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp10(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp1(context[CENTER], context[RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp2(context[CENTER], context[BOTTOM_RIGHT], context[RIGHT])
+
 	case 63:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp10(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[BOTTOM])
+		br = interp2(context[CENTER], context[BOTTOM_RIGHT], context[BOTTOM])
+
 	case 159:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp10(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp2(context[CENTER], context[BOTTOM_LEFT], context[BOTTOM])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 215:
+		tl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp10(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp2(context[CENTER], context[BOTTOM_LEFT], context[LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 246:
+		tl = interp2(context[CENTER], context[TOP_LEFT], context[LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp10(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 254:
+		tl = interp1(context[CENTER], context[TOP_LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		}
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp10(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 253:
+		tl = interp1(context[CENTER], context[TOP])
+		tr = interp1(context[CENTER], context[TOP])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp10(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp10(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 251:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp1(context[CENTER], context[TOP_RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp10(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 239:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp10(context[CENTER], context[LEFT], context[TOP])
+		}
+		tr = interp1(context[CENTER], context[RIGHT])
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp10(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp1(context[CENTER], context[RIGHT])
+
 	case 127:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp10(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp2(context[CENTER], context[TOP], context[RIGHT])
+		}
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+
 	case 191:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp10(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp10(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[BOTTOM])
+		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 223:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp2(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp10(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[BOTTOM_LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp2(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 247:
+		tl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp10(context[CENTER], context[TOP], context[RIGHT])
+		}
+		bl = interp1(context[CENTER], context[LEFT])
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp10(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	case 255:
+		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
+			tl = context[CENTER]
+		} else {
+			tl = interp10(context[CENTER], context[LEFT], context[TOP])
+		}
+		if !equalYuv(yuvContext[TOP], yuvContext[RIGHT]) {
+			tr = context[CENTER]
+		} else {
+			tr = interp10(context[CENTER], context[TOP], context[RIGHT])
+		}
+		if !equalYuv(yuvContext[BOTTOM], yuvContext[LEFT]) {
+			bl = context[CENTER]
+		} else {
+			bl = interp10(context[CENTER], context[BOTTOM], context[LEFT])
+		}
+		if !equalYuv(yuvContext[RIGHT], yuvContext[BOTTOM]) {
+			br = context[CENTER]
+		} else {
+			br = interp10(context[CENTER], context[RIGHT], context[BOTTOM])
+		}
+
 	default:
 		panic(fmt.Errorf("invalid pattern: %d", pattern))
 	}
