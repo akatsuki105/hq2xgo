@@ -27,10 +27,10 @@ func HQ2x(src *image.RGBA) (*image.RGBA, error) {
 	dest := image.NewRGBA(image.Rect(0, 0, srcX*2, srcY*2))
 
 	var wait sync.WaitGroup
+	wait.Add(srcX * srcY)
 	for x := 0; x < srcX; x++ {
-		wait.Add(srcY)
 		for y := 0; y < srcY; y++ {
-			go func(y int) {
+			go func(x, y int) {
 				context := [9]color.RGBA{
 					getPixel(src, x-1, y-1), getPixel(src, x, y-1), getPixel(src, x+1, y-1),
 					getPixel(src, x-1, y), getPixel(src, x, y), getPixel(src, x+1, y),
@@ -44,10 +44,10 @@ func HQ2x(src *image.RGBA) (*image.RGBA, error) {
 				dest.Set(x*2, y*2+1, bl)
 				dest.Set(x*2+1, y*2+1, br)
 				wait.Done()
-			}(y)
+			}(x, y)
 		}
-		wait.Wait()
 	}
+	wait.Wait()
 
 	return dest, nil
 }
