@@ -34,20 +34,27 @@ func Run() int {
 		output = base + "_hq2x" + ext
 	}
 
-	before, err := openImage(input)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return 1
-	}
-
-	after, err := hq2x.HQ2x(before.(*image.RGBA))
-
-	if err := saveImage(output, after); err != nil {
+	if err := doHQ2x(input, output); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return 1
 	}
 
 	return 0
+}
+
+func doHQ2x(input, output string) error {
+	before, err := openImage(input)
+	if err != nil {
+		return err
+	}
+
+	after, err := hq2x.HQ2x(before.(*image.RGBA))
+
+	if err := saveImage(output, after); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func help() {
