@@ -5,6 +5,7 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"sync"
 )
 
 const (
@@ -25,21 +26,27 @@ func HQ2x(src *image.RGBA) (*image.RGBA, error) {
 
 	dest := image.NewRGBA(image.Rect(0, 0, srcX*2, srcY*2))
 
+	var wait sync.WaitGroup
 	for x := 0; x < srcX; x++ {
+		wait.Add(srcY)
 		for y := 0; y < srcY; y++ {
-			context := [9]color.RGBA{
-				getPixel(src, x-1, y-1), getPixel(src, x, y-1), getPixel(src, x+1, y-1),
-				getPixel(src, x-1, y), getPixel(src, x, y), getPixel(src, x+1, y),
-				getPixel(src, x-1, y+1), getPixel(src, x, y+1), getPixel(src, x+1, y+1),
-			}
+			go func(y int) {
+				context := [9]color.RGBA{
+					getPixel(src, x-1, y-1), getPixel(src, x, y-1), getPixel(src, x+1, y-1),
+					getPixel(src, x-1, y), getPixel(src, x, y), getPixel(src, x+1, y),
+					getPixel(src, x-1, y+1), getPixel(src, x, y+1), getPixel(src, x+1, y+1),
+				}
 
-			tl, tr, bl, br := hq2xPixel(context)
-			tl.A, tr.A, bl.A, br.A = 0xff, 0xff, 0xff, 0xff
-			dest.Set(x*2, y*2, tl)
-			dest.Set(x*2+1, y*2, tr)
-			dest.Set(x*2, y*2+1, bl)
-			dest.Set(x*2+1, y*2+1, br)
+				tl, tr, bl, br := hq2xPixel(context)
+				tl.A, tr.A, bl.A, br.A = 0xff, 0xff, 0xff, 0xff
+				dest.Set(x*2, y*2, tl)
+				dest.Set(x*2+1, y*2, tr)
+				dest.Set(x*2, y*2+1, bl)
+				dest.Set(x*2+1, y*2+1, br)
+				wait.Done()
+			}(y)
 		}
+		wait.Wait()
 	}
 
 	return dest, nil
