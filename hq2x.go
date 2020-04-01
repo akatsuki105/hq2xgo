@@ -5,6 +5,8 @@ import (
 	"image"
 	"image/color"
 	"math"
+	"runtime"
+	"sync"
 )
 
 const (
@@ -30,24 +32,41 @@ func HQ2x(src *image.RGBA) (*image.RGBA, error) {
 
 	dest := image.NewRGBA(image.Rect(0, 0, srcX*2, srcY*2))
 
+	columns := make(chan int, srcX)
 	for x := 0; x < srcX; x++ {
-		for y := 0; y < srcY; y++ {
-			context := [9]color.RGBA{
-				getPixel(src, x-1, y-1), getPixel(src, x, y-1), getPixel(src, x+1, y-1),
-				getPixel(src, x-1, y), getPixel(src, x, y), getPixel(src, x+1, y),
-				getPixel(src, x-1, y+1), getPixel(src, x, y+1), getPixel(src, x+1, y+1),
-			}
-
-			tl, tr, bl, br := hq2xPixel(context)
-			tl.A, tr.A, bl.A, br.A = 0xff, 0xff, 0xff, 0xff
-			dest.Set(x*2, y*2, tl)
-			dest.Set(x*2+1, y*2, tr)
-			dest.Set(x*2, y*2+1, bl)
-			dest.Set(x*2+1, y*2+1, br)
-		}
+		columns <- x
 	}
 
+	var wg sync.WaitGroup
+	wg.Add(srcX)
+	for i := 0; i < runtime.NumCPU(); i++ {
+		go worker(i, src, dest, columns, &wg)
+	}
+	close(columns)
+	wg.Wait()
+
 	return dest, nil
+}
+
+// ワーカー
+func worker(id int, src, dest *image.RGBA, columns chan int, wg *sync.WaitGroup) {
+	for column := range columns {
+		hq2xColumn(src, dest, column)
+		wg.Done()
+	}
+}
+
+// x列目に対してhq2xアルゴリズムによる拡大処理
+func hq2xColumn(src, dest *image.RGBA, x int) {
+	srcY := src.Bounds().Dy()
+	for y := 0; y < srcY; y++ {
+		tl, tr, bl, br := hq2xPixel(src, x, y)
+		tl.A, tr.A, bl.A, br.A = 0xff, 0xff, 0xff, 0xff
+		dest.Set(x*2, y*2, tl)
+		dest.Set(x*2+1, y*2, tr)
+		dest.Set(x*2, y*2+1, bl)
+		dest.Set(x*2+1, y*2+1, br)
+	}
 }
 
 func getPixel(src *image.RGBA, x, y int) color.RGBA {
@@ -68,7 +87,14 @@ func getPixel(src *image.RGBA, x, y int) color.RGBA {
 	return src.RGBAAt(x, y)
 }
 
-func hq2xPixel(context [9]color.RGBA) (tl, tr, bl, br color.RGBA) {
+func hq2xPixel(src *image.RGBA, x, y int) (tl, tr, bl, br color.RGBA) {
+
+	context := [9]color.RGBA{
+		getPixel(src, x-1, y-1), getPixel(src, x, y-1), getPixel(src, x+1, y-1),
+		getPixel(src, x-1, y), getPixel(src, x, y), getPixel(src, x+1, y),
+		getPixel(src, x-1, y+1), getPixel(src, x, y+1), getPixel(src, x+1, y+1),
+	}
+
 	yuvContext := [9]color.YCbCr{}
 	yuvPixel := rgbaToYCbCr(context[CENTER])
 	for i := 0; i < 9; i++ {
