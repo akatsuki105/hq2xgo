@@ -1,6 +1,6 @@
 # hq2xgo
 
-![Go](https://github.com/Akatsuki-py/hq2xgo/workflows/Go/badge.svg) [![GoDoc](https://godoc.org/github.com/Akatsuki-py/hq2xgo?status.svg)](https://godoc.org/github.com/Akatsuki-py/hq2xgo)
+![Go](https://github.com/pokemium/hq2xgo/workflows/Go/badge.svg) [![GoDoc](https://godoc.org/github.com/pokemium/hq2xgo?status.svg)](https://godoc.org/github.com/pokemium/hq2xgo)
 
 Enlarge image by 2x with hq2x algorithm
 
@@ -26,13 +26,13 @@ $ hq2x input.png output.png
 See [godoc](https://godoc.org/github.com/Akatsuki-py/hq2xgo) for details. 
 
 ```sh
-$ go get github.com/Akatsuki-py/hq2xgo
+$ go get github.com/pokemium/hq2xgo
 ```
 
 ```go
 
 import (
-	hq2x "github.com/Akatsuki-py/hq2xgo"
+	hq2x "github.com/pokemium/hq2xgo"
 )
 
 after, err := hq2x.HQ2x(before) // var before *image.RGBA
