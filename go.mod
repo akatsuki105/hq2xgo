@@ -1,3 +1,4 @@
-module github.com/Akatsuki-py/hq2xgo
+module github.com/pokemium/hq2xgo
 
-go 1.13
+go 1.15
+

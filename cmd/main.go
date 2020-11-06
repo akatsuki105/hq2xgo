@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	hq2x "github.com/Akatsuki-py/hq2xgo"
+	hq2x "github.com/pokemium/hq2xgo"
 
 	_ "image/jpeg"
 	"image/png"
