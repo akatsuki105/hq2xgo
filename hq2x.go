@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"math"
 	"runtime"
 	"sync"
 )
@@ -48,7 +47,6 @@ func HQ2x(src *image.RGBA) (*image.RGBA, error) {
 	return dest, nil
 }
 
-// ワーカー
 func worker(id int, src, dest *image.RGBA, columns chan int, wg *sync.WaitGroup) {
 	for column := range columns {
 		hq2xColumn(src, dest, column)
@@ -56,7 +54,7 @@ func worker(id int, src, dest *image.RGBA, columns chan int, wg *sync.WaitGroup)
 	}
 }
 
-// x列目に対してhq2xアルゴリズムによる拡大処理
+// Apply HQ2x for column x
 func hq2xColumn(src, dest *image.RGBA, x int) {
 	srcY := src.Bounds().Dy()
 	for y := 0; y < srcY; y++ {
@@ -88,7 +86,6 @@ func getPixel(src *image.RGBA, x, y int) color.RGBA {
 }
 
 func hq2xPixel(src *image.RGBA, x, y int) (tl, tr, bl, br color.RGBA) {
-
 	context := [9]color.RGBA{
 		getPixel(src, x-1, y-1), getPixel(src, x, y-1), getPixel(src, x+1, y-1),
 		getPixel(src, x-1, y), getPixel(src, x, y), getPixel(src, x+1, y),
@@ -564,6 +561,7 @@ func hq2xPixel(src *image.RGBA, x, y int) (tl, tr, bl, br color.RGBA) {
 			bl = interp2(context[CENTER], context[BOTTOM], context[LEFT])
 		}
 		br = interp1(context[CENTER], context[BOTTOM_RIGHT])
+
 	case 75:
 		if !equalYuv(yuvContext[LEFT], yuvContext[TOP]) {
 			tl = context[CENTER]
@@ -959,6 +957,7 @@ func hq2xPixel(src *image.RGBA, x, y int) (tl, tr, bl, br color.RGBA) {
 		tr = interp2(context[CENTER], context[TOP_RIGHT], context[TOP])
 		bl = interp1(context[CENTER], context[BOTTOM])
 		br = interp1(context[CENTER], context[BOTTOM])
+
 	case 61:
 		tl = interp1(context[CENTER], context[TOP])
 		tr = interp1(context[CENTER], context[TOP])
@@ -1832,21 +1831,21 @@ func hq2xPixel(src *image.RGBA, x, y int) (tl, tr, bl, br color.RGBA) {
 
 func equalYuv(a color.YCbCr, b color.YCbCr) bool {
 	const (
-		yThreshhold = 48.
-		uThreshhold = 7.
-		vThreshhold = 6.
+		yThreshhold = 48 * 48
+		uThreshhold = 7 * 7
+		vThreshhold = 6 * 6
 	)
 
 	aY, aU, aV := a.Y, a.Cb, a.Cr
 	bY, bU, bV := b.Y, b.Cb, b.Cr
 
-	if math.Abs(float64(aY)-float64(bY)) > yThreshhold {
+	if (int(aY)-int(bY))*(int(aY)-int(bY)) > yThreshhold {
 		return false
 	}
-	if math.Abs(float64(aU)-float64(bU)) > uThreshhold {
+	if (int(aU)-int(bU))*(int(aU)-int(bU)) > uThreshhold {
 		return false
 	}
-	if math.Abs(float64(aV)-float64(bV)) > vThreshhold {
+	if (int(aV)-int(bV))*(int(aV)-int(bV)) > vThreshhold {
 		return false
 	}
 

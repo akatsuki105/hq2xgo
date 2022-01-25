@@ -30,11 +30,16 @@ $ go get github.com/pokemium/hq2xgo
 ```
 
 ```go
-
 import (
 	hq2x "github.com/pokemium/hq2xgo"
 )
 
 after, err := hq2x.HQ2x(before) // var before *image.RGBA
+```
 
+## Measure benchmark
+
+```sh
+$ cd cmd/
+$ go test -bench .
 ```
