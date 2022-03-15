@@ -6,6 +6,7 @@ import (
 	"image"
 	"os"
 	"path/filepath"
+	"image/draw"
 
 	hq2x "github.com/pokemium/hq2xgo"
 
@@ -42,13 +43,24 @@ func Run() int {
 	return 0
 }
 
+func imageToRGBA(im image.Image) *image.RGBA {
+	dst := image.NewRGBA(im.Bounds())
+	draw.Draw(dst, im.Bounds(), im, im.Bounds().Min, draw.Src)
+	return dst
+}
+
 func doHQ2x(input, output string) error {
 	before, err := openImage(input)
 	if err != nil {
 		return err
 	}
 
-	after, err := hq2x.HQ2x(before.(*image.RGBA))
+	b, ok := before.(*image.RGBA)
+	if !ok {
+		b = imageToRGBA(before)
+	}
+
+	after, err := hq2x.HQ2x(b)
 
 	if err := saveImage(output, after); err != nil {
 		return err
