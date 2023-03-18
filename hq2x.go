@@ -58,8 +58,9 @@ func worker(id int, src, dest *image.RGBA, columns chan int, wg *sync.WaitGroup)
 func hq2xColumn(src, dest *image.RGBA, x int) {
 	srcY := src.Bounds().Dy()
 	for y := 0; y < srcY; y++ {
+		srcA := src.At(x, y).(color.RGBA).A
 		tl, tr, bl, br := hq2xPixel(src, x, y)
-		tl.A, tr.A, bl.A, br.A = 0xff, 0xff, 0xff, 0xff
+		tl.A, tr.A, bl.A, br.A = srcA, srcA, srcA, srcA
 		dest.Set(x*2, y*2, tl)
 		dest.Set(x*2+1, y*2, tr)
 		dest.Set(x*2, y*2+1, bl)
